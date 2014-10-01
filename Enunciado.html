@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<link rel="stylesheet" href="Enunciado_files/bootstrap.css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Introducción a las Tecnologías del Habla</title>
+<link rel="shortcut icon" href="http://www.dc.uba.ar/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+<div class="row">
+ <div class="col-md-3"></div>
+ <div class="col-md-7 ">
+
+<h1>TP1 - Síntesis del Habla</h1>
+<p><b>Introducción a las Tecnologías del Habla</b> - 2º Cuatrimestre de 2014 - DC, FCEyN, UBA</p>
+
+<h3 style="color:red">Por favor, seguir atentamente todas las instrucciones.</h3>
+
+<hr>
+
+<h2>Implementación de un sintetizador concatenativo de difonos</h2>
+
+<p>Sea <i>L</i> un lenguaje compuesto por seis fonos: la vocal [a], y 
+cinco consonantes: [k], [l], [m], [p], [s]. Estos fonos sólo se pueden 
+agrupar para formar sílabas de tipo CV; es decir: [ka], [la], [ma], [pa]
+ y [sa]. Entonces, por ejemplo, las siguientes sílabas <b>no</b> forman parte del lenguaje: [a], [pla], [mas].</p>
+
+<p>Este trabajo práctico consiste en implementar un sintetizador concatenativo de difonos para <i>L</i>. El sistema debe tener en su inventario exactamente <b>una instancia de cada difono</b>; es decir, <b>no debe realizar selección de unidades</b> al sintetizar una frase nueva.</p>
+
+<p>Se pide implementar el sintetizador propiamente dicho; o sea, el 
+back-end de un sistema TTS. El sistema debe recibir como entrada una 
+secuencia de fonos, y generar como salida un archivo de audio 
+conteniendo el habla sintetizada.</p>
+
+<p>En la secuencia de fonos pueden marcarse dos aspectos prosódicos:
+</p><ul>
+<li>Si una vocal debe acentuarse, se marca con mayúscula ('A'); en caso contrario, con minúscula ('a').
+</li><li>La secuencia de entrada puede terminar en el caracter '?', en 
+cuyo caso la salida deberá tener la prosodia de una pregunta (por 
+ejemplo, entonación final ascendente).
+</li></ul>
+La entrada debe representarse como una cadena de caracteres ASCII. No 
+puede contener espacios en blanco ni caracteres distintos de "aAklmps".
+Por ejemplo, las siguientes secuencias son entradas válidas: "mamA", 
+"kAsa", "kAsa?", "lakAsa", "papAsAlalamAsa?". 
+Ejemplos de alumnos de años anteriores: <a href="http://habla.dc.uba.ar/gravano/ith-2014/tp1/tp1-morten.wav">mamAsalAlapApa</a>, <a href="http://habla.dc.uba.ar/gravano/ith-2014/tp1/tp1-sergio.wav">papAsakAlakAma</a>.
+<p></p>
+
+<p>Las tareas a realizar consisten en:</p>
+<ol>
+<li> Grabar el inventario de sonidos (difonos), en mono, 16kHz, 16 bits.
+</li><li> Etiquetar los difonos en una capa de intervalos (<i>interval tier</i>) en un archivo TextGrid.
+</li><li> Recortar los difonos y generar un archivo wav para cada uno.
+</li><li> Armar un programa que, dada una secuencia de difonos, 
+concatene los archivos de los difonos correspondientes, genere un 
+archivo wav y (de ser necesario) modifique su entonación final. 
+<ul>
+<li>El programa debe funcionar en modo <i>batch</i> (no interactivo), 
+recibiendo como únicos argumentos la secuencia de fonos a sintetizar y 
+el nombre del archivo wav a crear. Ejemplo:
+<pre>./tts.py mamAsalAlapApa? /tmp/output.wav</pre>
+</li><li>La salida debe guardarse como un archivo wav (mono, 16kHz, 16 bits), el cual <b>no</b> debe ser reproducido automáticamente por el programa.
+</li><li>El programa debe correr en Linux en las máquinas del laboratorio Turing.
+</li></ul>
+</li></ol>
+
+<p><b>Sugerencias:</b>
+
+</p><ul>
+<li> No recortar a mano los archivos de cada difono. Con el siguiente 
+script se puede generar un archivo wav para cada intervalo marcado en un
+ TextGrid: <a href="http://habla.dc.uba.ar/gravano/ith-2014/tp1/save_labeled_intervals_to_wav_sound_files.praat">save_labeled_intervals_to_wav_sound_files.praat</a> (tomado de <a href="http://www.helsinki.fi/%7Elennes/praat-scripts/">aquí</a>). En la opción "Margin (seconds)" usar 0.0001.
+</li><li> Para concatenar los archivos wav, usar la opción "Combine 
+sounds - Concatenate recoverably" de Praat, que permite ver en un 
+TextGrid los archivos originales. Esto es muy útil para encontrar y 
+rastrear errores en las síntesis realizadas.
+</li><li> Para el programa del punto 4, usar el lenguaje de scripting de
+ Praat para algunas cosas, y un lenguaje más manejable (e.g., Python) 
+para otras.
+</li><li>Grabar las vocales acentuadas y no acentuadas como difonos distintos (ejemplo: "-a", "-A", "ak", "Ak", "ka", "kA", etc.).
+</li><li>No generar la entonación final grabando difonos especiales. En 
+cambio, modificar el pitch track del archivo wav generado. Por ejemplo, 
+para ello pueden usarse los scripts provistos <a href="http://habla.dc.uba.ar/gravano/ith-2014/tp1/manipular-pitch/">aquí</a> (leer <a href="http://habla.dc.uba.ar/gravano/ith-2014/tp1/manipular-pitch/README.txt">el archivo README</a>).
+
+</li></ul> 
+
+<hr>
+
+<h2>Modalidad de entrega</h2> 
+
+<p>Este TP debe realizarse en <b>grupos de dos integrantes</b>.</p>
+
+<p>La entrega se realiza por mail a <b>uba<font color="#010101">-</font>habla <!-- sugatin@cd.abu.ra -->[at] <!-- suga@sc.culombia.ude -->gmail.com</b>.
+Debe ponerse como subject "TP1 apellido1 y apellido2", y se debe adjuntar un archivo comprimido "apellido1-apellido2.zip" con:</p>
+<ul>
+<li> inventario de sonidos (difonos);
+</li><li> scripts necesarios para ejecutar el sintetizador, con el código bien comentado;
+</li><li> archivo README.txt con cualquier aclaración adicional que sea necesaria.
+</li></ul>
+
+<p><b>Fecha límite:</b> <u>Lunes 13 de octubre a las 23:59 horas.</u> 
+ Los TPs entregados fuera de término serán aceptados, pero la demora incidirá negativamente en la nota.<br>
+
+</p><hr>
+
+<a name="pyr"></a><h2>Preguntas y respuestas</h2>
+
+<p><b>Pregunta:</b><i>
+No me quedó claro si tenemos que grabar aparte los difonos acentuados o vamos a generar los acentos prosódicos artificialmente.
+</i>
+<br>
+<b>Respuesta:</b>
+Tienen que grabar los difonos acentuados y los no acentuados por separado.
+</p>
+
+<p><b>Pregunta:</b><i>
+Para sintetizar una entrada nueva, ¿qué cosas deberían hacerse en Praat y cuáles no?
+</i>
+<br>
+<b>Respuesta:</b>
+Una solución posible es que un script en Python (o similar) procese la secuencia de entrada y 
+construya un script de Praat con los comandos necesarios: abrir los archivos wav de los difonos 
+a sintetizar, seleccionar todos los objetos, concatenar, guardar el resultado. Después el 
+mismo script de Python ejecuta el script de Praat. Por ejemplo, en Python eso se puede lograr con el comando
+<font style="font-family: Courier New">os.system('praat script.praat')</font>. Obviamente esto es solo una 
+posibilidad; como siempre, hay muchas formas distintas de resolver el problema.
+</p>
+
+<p><b>Pregunta:</b>
+<i>
+ Me surgió la duda de si el inventario que debo obtener son las sílabas 
+posibles (10) o todas las consonantes por separado más las dos aes (una 
+acentuada y otra no).
+</i>
+<br>
+<b>Respuesta:</b>
+La unidad que tienen que usar es el <b>difono</b>: desde la mitad de un fono hasta la mitad del fono siguiente.
+Entonces, el inventario de sonidos debe estar compuesto por los siguientes difonos para el lenguaje <i>L</i>:<br>
+-k, -l, ...<br> 
+ka, la, ...<br>
+ak, al, ...<br>
+kA, lA, ...<br>
+Ak, Al, ...<br>
+a-, A-<br>
+Para la síntesis de "kAsa", por ejemplo, se usarán los difonos -k, kA, As, sa, a-.
+</p>
+
+<p><b>Pregunta:</b>
+<i>
+Cuando tengo que repetir un difono, por
+ ejemplo "mamama" donde los difonos ma y am están repetidos, no puedo
+ juntarlos, yo asumí que si los agregaba en orden, o sea:<br>
+ select Sound -m<br>
+ plus Sound ma<br>
+ plus Sound am<br>
+ plus Sound ma<br>
+ plus Sound am<br>
+ plus Sound ma<br>
+ plus Sound a-<br>
+ Concatenate recoverably<br>
+ debería armar lo que necesito, pero eso me genera solo "mama". 
+</i>
+<br>
+<b>Respuesta:</b>
+El problema es con la selección de los objetos:<br>
+ select Sound -m<br>
+ plus Sound ma  --&gt; selecciona el primer 'Sound ma'<br>
+ plus Sound am  --&gt; selecciona el primer 'Sound am'<br>
+ plus Sound ma  --&gt; el primer 'Sound ma' ya está seleccionado, no hace nada<br>
+ plus Sound am  --&gt; el primer 'Sound am' ya está seleccionado, no hace nada<br>
+ plus Sound ma  --&gt; el primer 'Sound ma' ya está seleccionado, no hace nada<br>
+ plus Sound a-<br>
+Para resolver este problema, tenés que renombrar los sonidos al
+abrirlos. Por ejemplo, después de abrir el difono "-m", renombralo
+como "difono1"; después de abrir el primer "ma", renombralo como
+"difono2", etc. Entonces después, para concatenar, tenés que hacer
+"select Sound difono1; plus Sound difono2; plus Sound difono3;...."
+</p>
+
+
+<!--
+<p><b>Pregunta:</b>
+<i>
+</i>
+<br>
+<b>Respuesta:</b>
+</p>
+-->
+
+<hr>
+
+<p align="right"><b>Ultima actualización:</b> 28 Sep 2014</p>
+
+
+</div>
+</div>
+
+
+
+</body></html>
