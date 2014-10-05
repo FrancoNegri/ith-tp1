@@ -1,7 +1,9 @@
 #!/usr/bin/python
-
+from __future__ import division
+import re
 import sys
 import subprocess
+import math
 
 
 def separarEnDifonos(s):
@@ -43,9 +45,48 @@ def asignarTonoDePregunta():
 	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
 	output = process.communicate()[0]
 
+	#Me grabe haciendo tres preguntas, y por lo que pude ver en praat
+	#El pitch se comporta como una onda senoidal, es decir,
+	#Del comienzo de la frase comienza a suvir hasta 1/4 de la frase
+	#Luego, pasado ese punto, comienza a disminuir hasta 3/4 y nuevamente sube
+	#En algunos casos no es tan marcado, por ejemplo en las preguntas mas largas, pero bueno,
+	#eso se ve despues
+
+	num_lines = sum(1 for line in open('chain.PitchTier')) #cuento las lineas, asi aproximo el periodo de mi onda senoidal
+	num_lines = num_lines - 6
+	num_lines = num_lines/3				
 
 
-	#aca modifico los values de chain.PitchTier para cambiar el pitch
+	frecIni = 0
+	with open("chain.PitchTier", "r+") as f:
+		#consigo el primer pitch para guiarme
+		praatPitch = f.readlines()
+		for line in praatPitch:
+			if "value" in line:
+				frecIni = re.findall("\d+.\d+", line)
+				frecIni = float(frecIni[0])
+				break
+
+	with open("chain.PitchTier", "r+") as f:
+		praatPitch = f.readlines()
+		f.seek(0)
+		i = 1
+		for line in praatPitch:
+			if "value" in line:
+				f.write("    value = ")
+				
+				#Nota: cuanto mas grande es la amplitud del pitch, mas tono de pregunta tiene la frase
+				#Pero tambien mas se rome el sonido
+				amplitudDelPitch = 100
+
+
+				f.write( str( amplitudDelPitch*math.cos((i*2*math.pi)/num_lines) + frecIni )) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
+				f.write("\n")
+				i = i + 1
+			else:
+				f.write(line)
+		print i
+		f.close()
 
 
 	print 'Re-insertando pitch...'
