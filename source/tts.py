@@ -47,7 +47,7 @@ def asignarTonoDePregunta():
 
 	#Me grabe haciendo tres preguntas, y por lo que pude ver en praat
 	#El pitch se comporta como una onda senoidal, es decir,
-	#Del comienzo de la frase comienza a suvir hasta 1/4 de la frase
+	#Del comienzo de la frase comienza a subir hasta 1/4 de la frase
 	#Luego, pasado ese punto, comienza a disminuir hasta 3/4 y nuevamente sube
 	#En algunos casos no es tan marcado, por ejemplo en las preguntas mas largas, pero bueno,
 	#eso se ve despues
@@ -76,11 +76,19 @@ def asignarTonoDePregunta():
 				f.write("    value = ")
 				
 				#Nota: cuanto mas grande es la amplitud del pitch, mas tono de pregunta tiene la frase
-				#Pero tambien mas se rome el sonido
-				amplitudDelPitch = 100
+				#Pero tambien mas se rompe el sonido
+				amplitudDelPitch = 50
 
+				#Cuando me acerco al final, le doy mas fuerza a la entonación de la pregunta 
+				if(i/num_lines > 3/4):
+					amplitudDelPitch = 100
 
-				f.write( str( amplitudDelPitch*math.cos((i*2*math.pi)/num_lines) + frecIni )) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
+				#Tomo la frecuencia original
+				frecOrig = re.findall("\d+.\d+", line)
+				frecOrig = float(frecOrig[0])
+
+				#Hago un merge del pitch original y del pitch "de pregunta"
+				f.write( str( amplitudDelPitch*math.cos((i*2*math.pi)/num_lines) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
 				f.write("\n")
 				i = i + 1
 			else:
@@ -89,7 +97,7 @@ def asignarTonoDePregunta():
 		f.close()
 
 
-	print 'Re-insertando pitch...'
+	print 'Reemplazando pitch...'
 	bash = "praat reemplazar-pitch-track.praat chain.wav chain.PitchTier chain-mod.wav 50 300"
 	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
 	output = process.communicate()[0]
