@@ -36,8 +36,37 @@ def generarScriptPraat(ls):
 	script += " Concatenate recoverably\n select Sound chain\n Save as WAV file... chain.wav"
 	return script
 
+
+def asignarTonoDePregunta():
+	print 'Extrayendo pitch...'
+	bash = "praat extraer-pitch-track.praat chain.wav chain.PitchTier 50 300"
+	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
+	output = process.communicate()[0]
+
+
+
+	#aca modifico los values de chain.PitchTier para cambiar el pitch
+
+
+	print 'Re-insertando pitch...'
+	bash = "praat reemplazar-pitch-track.praat chain.wav chain.PitchTier chain-mod.wav 50 300"
+	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
+	output = process.communicate()[0]
+
+
+
+
+
+
 print 'Number of arguments:', len(sys.argv), 'arguments.'
 print 'Argument List:', str(sys.argv)
+
+pregunta = 0
+if (sys.argv[1][-1] == "?"):
+	print 'Es pregunta!'
+	pregunta = 1
+	sys.argv[1] = sys.argv[1][:-1]
+	#borro el caracter para no buscar su difono
 
 l = separarEnDifonos(sys.argv[1])
 for x in l:
@@ -54,6 +83,9 @@ bash = "praat praatScript"
 process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
 output = process.communicate()[0]
 
+if(pregunta == 1):
+	print 'Asignando prosodia correcta...'
+	asignarTonoDePregunta()
 
 # Read from file... difonos_wav/Al.wav
 # Read from file... difonos_wav/Am.wav

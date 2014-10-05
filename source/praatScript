@@ -1,14 +1,14 @@
- Read from file... difonos_wav/-p.wav
-select Sound -p
+ Read from file... difonos_wav/-s.wav
+select Sound -s
 Rename... 0
- Read from file... difonos_wav/pa.wav
-select Sound pa
+ Read from file... difonos_wav/sa.wav
+select Sound sa
 Rename... 1
- Read from file... difonos_wav/as.wav
-select Sound as
+ Read from file... difonos_wav/ak.wav
+select Sound ak
 Rename... 2
- Read from file... difonos_wav/sA.wav
-select Sound sA
+ Read from file... difonos_wav/kA.wav
+select Sound kA
 Rename... 3
  Read from file... difonos_wav/Al.wav
 select Sound Al
@@ -16,39 +16,33 @@ Rename... 4
  Read from file... difonos_wav/la.wav
 select Sound la
 Rename... 5
+ Read from file... difonos_wav/ap.wav
+select Sound ap
+Rename... 6
+ Read from file... difonos_wav/pA.wav
+select Sound pA
+Rename... 7
+ Read from file... difonos_wav/Ap.wav
+select Sound Ap
+Rename... 8
+ Read from file... difonos_wav/pa.wav
+select Sound pa
+Rename... 9
  Read from file... difonos_wav/ak.wav
 select Sound ak
-Rename... 6
+Rename... 10
  Read from file... difonos_wav/kA.wav
 select Sound kA
-Rename... 7
- Read from file... difonos_wav/Ak.wav
-select Sound Ak
-Rename... 8
- Read from file... difonos_wav/ka.wav
-select Sound ka
-Rename... 9
- Read from file... difonos_wav/am.wav
-select Sound am
-Rename... 10
- Read from file... difonos_wav/ma.wav
-select Sound ma
 Rename... 11
- Read from file... difonos_wav/am.wav
-select Sound am
+ Read from file... difonos_wav/Ap.wav
+select Sound Ap
 Rename... 12
- Read from file... difonos_wav/mA.wav
-select Sound mA
+ Read from file... difonos_wav/pa.wav
+select Sound pa
 Rename... 13
- Read from file... difonos_wav/As.wav
-select Sound As
-Rename... 14
- Read from file... difonos_wav/sa.wav
-select Sound sa
-Rename... 15
  Read from file... difonos_wav/a-.wav
 select Sound a-
-Rename... 16
+Rename... 14
  plus Sound 0
  plus Sound 1
  plus Sound 2
@@ -64,8 +58,6 @@ Rename... 16
  plus Sound 12
  plus Sound 13
  plus Sound 14
- plus Sound 15
- plus Sound 16
  Concatenate recoverably
  select Sound chain
  Save as WAV file... chain.wav
