@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding: utf8
 from __future__ import division
 import re
 import sys
@@ -16,7 +17,7 @@ def separarEnDifonos(s):
 		l.append(difono) # agrego difono a una lista
 	difono_fin = s[:1] + "-"
 	l.append(difono_fin)
-	return l 
+	return l
 
 def generarScriptPraat(ls):
 	script = ""
@@ -54,7 +55,7 @@ def asignarTonoDePregunta():
 
 	num_lines = sum(1 for line in open('chain.PitchTier')) #cuento las lineas, asi aproximo el periodo de mi onda senoidal
 	num_lines = num_lines - 6
-	num_lines = num_lines/3				
+	num_lines = num_lines/3
 
 
 	frecIni = 0
@@ -74,12 +75,12 @@ def asignarTonoDePregunta():
 		for line in praatPitch:
 			if "value" in line:
 				f.write("    value = ")
-				
+
 				#Nota: cuanto mas grande es la amplitud del pitch, mas tono de pregunta tiene la frase
 				#Pero tambien mas se rompe el sonido
 				amplitudDelPitch = 50
 
-				#Cuando me acerco al final, le doy mas fuerza a la entonación de la pregunta 
+				#Cuando me acerco al final, le doy mas fuerza a la entonación de la pregunta
 				if(i/num_lines > 3/4):
 					amplitudDelPitch = 100
 
