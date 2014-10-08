@@ -36,7 +36,7 @@ def generarScriptPraat(ls):
 		plus = "plus Sound " + str(i) + "\n"
 		script += " " + plus
 		i+=1
-	script += " Concatenate recoverably\n select Sound chain\n Save as WAV file... chain.wav"
+	script += " Concatenate recoverably\n select Sound chain\n Scale intensity... 72\n Save as WAV file... chain.wav"
 	return script
 
 
@@ -114,7 +114,7 @@ def asignarTonoDePregunta():
 					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
 
 				# if(i > num_lines - linesDifono):
-				# 	frecPreg = frecPreg*1.5
+				# 	frecPreg = frecOrig*2
 
 
 				#Hago un merge del pitch original y del pitch "de pregunta"
