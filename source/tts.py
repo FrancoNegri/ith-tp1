@@ -68,6 +68,18 @@ def asignarTonoDePregunta():
 				frecIni = float(frecIni[0])
 				break
 
+	#lines en un difono = 30 aprox
+	linesDifono = 30
+	# el periodo comienzo siendo 30, que es la cantidad de lines en dos un difonos aprox, después se achica
+	periodo = linesDifono
+	# amplitud comienza en 100, después se achica
+	amplitudPregunta = 100
+	# la frecuencia de la pregunta
+	frecPreg = 0
+	#la fase de la onda
+	fase = 0
+
+
 	with open("chain.PitchTier", "r+") as f:
 		praatPitch = f.readlines()
 		f.seek(0)
@@ -78,18 +90,32 @@ def asignarTonoDePregunta():
 
 				#Nota: cuanto mas grande es la amplitud del pitch, mas tono de pregunta tiene la frase
 				#Pero tambien mas se rompe el sonido
-				amplitudDelPitch = 50
 
-				#Cuando me acerco al final, le doy mas fuerza a la entonación de la pregunta
-				if(i/num_lines > 3/4):
-					amplitudDelPitch = 100
 
 				#Tomo la frecuencia original
 				frecOrig = re.findall("\d+.\d+", line)
 				frecOrig = float(frecOrig[0])
 
+				# al comienzo mantengo la frecuencia original
+				frecPreg = frecOrig
+				# si paso el cuarto le doy forma de pregunta con una onda
+				if(i > linesDifono-5):
+					fase = i
+					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
+
+				#en el medio se estabiliza de nuevo, vuelve a original
+				# if(i > 80):
+				# 	frecPreg = frecOrig
+				#en el final nuevamente aplico una onda con una amplitud menor
+				if(i > num_lines - linesDifono-10):
+					amplitudPregunta = 180
+					periodo = 20
+					fase = i
+					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
+
+
 				#Hago un merge del pitch original y del pitch "de pregunta"
-				f.write( str( amplitudDelPitch*math.cos((i*2*math.pi)/num_lines) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
+				f.write( str(frecPreg)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
 				f.write("\n")
 				i = i + 1
 			else:
