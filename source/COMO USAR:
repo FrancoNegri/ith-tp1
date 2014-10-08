@@ -1,9 +1,11 @@
 COMO USAR:
 
-$ python tss.py [frase]
+$ python tss.py "frase"
 
 ejemplos de frases:
-lakasAka
-sakAlapApakApa
+"lakasAka"
+"sakAlapApakApa"
+"sakAlapApakApa?"
 
-abrir el archivo chain.wav para escuchar
+- abrir el archivo chain.wav para escuchar
+- si es pregunta abrir chain-mod.wav
