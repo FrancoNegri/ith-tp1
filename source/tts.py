@@ -113,8 +113,12 @@ def asignarTonoDePregunta():
 					fase = i
 					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
 
+				# if(i > num_lines - linesDifono):
+				# 	frecPreg = frecPreg*1.5
+
 
 				#Hago un merge del pitch original y del pitch "de pregunta"
+
 				f.write( str(frecPreg)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
 				f.write("\n")
 				i = i + 1
