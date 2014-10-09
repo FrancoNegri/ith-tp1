@@ -36,7 +36,7 @@ def generarScriptPraat(ls):
 		plus = "plus Sound " + str(i) + "\n"
 		script += " " + plus
 		i+=1
-	script += " Concatenate recoverably\n select Sound chain\n Save as WAV file... chain.wav"
+	script += " Concatenate recoverably\n select Sound chain\n Scale intensity... 70\n Save as WAV file... chain.wav"
 	return script
 
 
