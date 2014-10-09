@@ -100,21 +100,26 @@ def asignarTonoDePregunta():
 				frecPreg = frecOrig
 				# si paso el cuarto le doy forma de pregunta con una onda
 				if(i > linesDifono-5):
-					fase = i
-					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
+					frecPreg = frecOrig*1.2
+				if(i >linesDifono*2):
+					frecPreg = frecOrig*1.5
+					# fase = i
+					# frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
 
 				#en el medio se estabiliza de nuevo, vuelve a original
-				# if(i > 80):
-				# 	frecPreg = frecOrig
+				if(i > 80):
+					frecPreg = frecOrig
 				#en el final nuevamente aplico una onda con una amplitud menor
-				if(i > num_lines - linesDifono-10):
-					amplitudPregunta = 180
-					periodo = 20
-					fase = i
-					frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
+				# if(i > num_lines - linesDifono-10):
+				# 	amplitudPregunta = 180
+				# 	periodo = 20
+				# 	fase = i
+				# 	frecPreg = amplitudPregunta*math.cos(fase+(i*2*math.pi/periodo))+frecOrig
 
-				# if(i > num_lines - linesDifono):
-				# 	frecPreg = frecOrig*2
+				if(i > num_lines - linesDifono):
+					frecPreg = frecOrig*1.2
+				if(i > num_lines - linesDifono/2):
+					frecPreg = frecOrig*1.7
 
 
 				#Hago un merge del pitch original y del pitch "de pregunta"

@@ -4,7 +4,7 @@ form Arguments
   word file_PitchTier_in .PitchTier
   word file_wav_out .wav
   real min_pitch 75
-  real max_pitch 500
+  real max_pitch 300
 endform
 
 Read from file... 'file_wav_in$'
