@@ -40,19 +40,20 @@ def generarScriptPraat(ls):
 	return script
 
 
-def asignarTonoDePregunta():
+def asignarTonoDePregunta(cantDifonos):
 	print 'Extrayendo pitch...'
 	bash = "praat extraer-pitch-track.praat chain.wav chain.PitchTier 50 300"
 	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
 	output = process.communicate()[0]
 
+	num_lines = sum(1 for line in open('chain.PitchTier')) #cuento las lineas, asi aproximo el periodo de mi onda senoidal
 
+	valoresPitch = num_lines/3 #las lineas con valores del pitchTier
 	#Vamos a usar una onda sinoidal para darle aspecto de pregunta a las frases,
 	# ya que no solo al final de la pregunta notamos que sube la entonación
-	# El periodo elegido para la onda es un poco más largo que la duración de una sílaba (aprox 15 lineas del pitchTier)
-	periodo = 20 
-
-
+	# El periodo elegido para la onda es aprox el la cant. de sílabas 
+	periodo = valoresPitch/(cantDifonos-2)*3
+	print periodo
 	frecIni = 0
 	with open("chain.PitchTier", "r+") as f:
 		#consigo el primer pitch para guiarme
@@ -71,16 +72,18 @@ def asignarTonoDePregunta():
 			if "value" in line:
 				f.write("    value = ")
 
-				#Nota: si ponemos una amplitud muy grande, se distorciona el sonido.
-				amplitudDelPitch = 20
-
-
 				#Tomo la frecuencia original
 				frecOrig = re.findall("\d+.\d+", line)
 				frecOrig = float(frecOrig[0])
 
+				# la amplitud del pitch es acorde a la frec original
+				amplitudDelPitch = frecOrig*0.05
+				if(i>valoresPitch*0.50):
+					#cuando nos acercamos al final aumentamos la amplitud
+					amplitudDelPitch = frecOrig*0.25
 				#Hago un merge del pitch original y del pitch "de pregunta"
-				f.write( str( amplitudDelPitch*math.sin((i*2*math.pi)/periodo) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo de una sílaba aprox y amplitud 100
+			
+				f.write( str( amplitudDelPitch*math.cos(((i*2*math.pi)/periodo)) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo de una sílaba aprox y amplitud 100
 				f.write("\n")
 				i = i + 1
 			else:
@@ -115,6 +118,8 @@ for x in l:
 script = generarScriptPraat(l)
 print script
 
+cantDifonos = len(l)
+
 text_file = open("praatScript", "w")
 text_file.write(script)
 text_file.close()
@@ -126,7 +131,7 @@ output = process.communicate()[0]
 
 if(pregunta == 1):
 	print 'Asignando prosodia correcta...'
-	asignarTonoDePregunta()
+	asignarTonoDePregunta(cantDifonos)
 
 # Read from file... difonos_wav/Al.wav
 # Read from file... difonos_wav/Am.wav
