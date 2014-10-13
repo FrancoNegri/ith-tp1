@@ -1,0 +1,21 @@
+==== Versión ====
+Versión praat utilizada: 5.3.02
+
+
+==== ¿Cómo cambiamos la entonación? ====
+Grabando frases con tono de pregunta nos dimos cuenta de que, por lo general, el pitch tenía una forma de onda sinoidal.
+
+Por lo tanto, decidimos modificar el pitchTier de nuestro audio utilizando la siguiente función:
+
+amplitud*cos(x*2*math.pi/periodo) + frecOriginal
+
+donde la amplitud fue elegida cercana a la frecOriginal con leves variaciones hacia el final de la frase para acentuar la pregunta.
+
+El periodo que se eligió fue tomando la cantidad de muestras totales del pitchTier dividido la cantidad de sílabas. 
+
+periodo = valoresPitchTier/silabasTotales
+
+Por lo que el periodo está estrechamente relacionado con las sílabas, logrando que en toda la frase se perciba una entonación de pregunta.
+
+Cuando superamos el 50%, la amplitud de la onda se agranda, agudizando la frecuencia, para denotar el fin de la frase.
+
