@@ -46,16 +46,11 @@ def asignarTonoDePregunta():
 	process = subprocess.Popen(bash.split(), stdout=subprocess.PIPE)
 	output = process.communicate()[0]
 
-	#Me grabe haciendo tres preguntas, y por lo que pude ver en praat
-	#El pitch se comporta como una onda senoidal, es decir,
-	#Del comienzo de la frase comienza a subir hasta 1/4 de la frase
-	#Luego, pasado ese punto, comienza a disminuir hasta 3/4 y nuevamente sube
-	#En algunos casos no es tan marcado, por ejemplo en las preguntas mas largas, pero bueno,
-	#eso se ve despues
 
-	num_lines = sum(1 for line in open('chain.PitchTier')) #cuento las lineas, asi aproximo el periodo de mi onda senoidal
-	num_lines = num_lines - 6
-	num_lines = num_lines/3
+	#Vamos a usar una onda sinoidal para darle aspecto de pregunta a las frases,
+	# ya que no solo al final de la pregunta notamos que sube la entonación
+	# El periodo elegido para la onda es un poco más largo que la duración de una sílaba (aprox 15 lineas del pitchTier)
+	periodo = 20 
 
 
 	frecIni = 0
@@ -76,20 +71,16 @@ def asignarTonoDePregunta():
 			if "value" in line:
 				f.write("    value = ")
 
-				#Nota: cuanto mas grande es la amplitud del pitch, mas tono de pregunta tiene la frase
-				#Pero tambien mas se rompe el sonido
-				amplitudDelPitch = 50
+				#Nota: si ponemos una amplitud muy grande, se distorciona el sonido.
+				amplitudDelPitch = 20
 
-				#Cuando me acerco al final, le doy mas fuerza a la entonación de la pregunta
-				if(i/num_lines > 3/4):
-					amplitudDelPitch = 100
 
 				#Tomo la frecuencia original
 				frecOrig = re.findall("\d+.\d+", line)
 				frecOrig = float(frecOrig[0])
 
 				#Hago un merge del pitch original y del pitch "de pregunta"
-				f.write( str( amplitudDelPitch*math.cos((i*2*math.pi)/num_lines) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo del sonido y amplitud 100
+				f.write( str( amplitudDelPitch*math.sin((i*2*math.pi)/periodo) + frecOrig)) #esta linea hace toda la magia, genera una onda sinoidal de periodo = largo de una sílaba aprox y amplitud 100
 				f.write("\n")
 				i = i + 1
 			else:
